@@ -1,0 +1,255 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[ngerman]{babel}
+
+% basic page layout
+\usepackage[margin=1in, left=1cm, right=1cm]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sc \LaTeX Cheat Sheet}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{G. Wellecke}
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\setlength\parindent{0pt}
+
+% writing vectors as \vv*{vector}{index} or \vv{vector} respectively
+\usepackage[d]{esvect}
+
+% for writing math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+
+% for changing enumeration markers
+% \begin{enumerate}[label=(\roman*)]
+\usepackage{enumitem}
+
+% for pretty quotes. use: \textquote{}
+\usepackage{csquotes}
+\usepackage[backend = biber, sorting = none]{biblatex}
+\bibliography{sources}
+
+%SI EINHEITEN
+\usepackage[mode=text,decimalsymbol=comma,exponent-product=\cdot,separate-uncertainty = true]{siunitx}
+%SI-Einheiten über \SI{<num>}{<unit>}, \ang{;;} Winkel in Grad/Min/Sek, \si{<unit>}
+\sisetup{locale=DE}
+
+%Tabellensatz
+\usepackage{booktabs}
+    %Bsp
+    %\toprule wird zu Beginn der Tabelle gesetzt oder \cline{2-3} für Linie von Zeile 2 bis 3
+    %\midrule bzw. \cmidrule werden innerhalb der Tabelle als horizontale Trennstriche verwendet
+    %\bottomrule setzt den Schlussstrich unter die Tabelle.
+
+% Zur Graphikausgabe
+%Beipiel: \includegraphics[width=\textwidth]{grafik.png}
+\usepackage{graphicx}
+
+% Mehrere Abbildungen nebeneinander
+% Beispiel:
+% \begin{figure}[htb]
+%   \centering
+%   \subfigure[Beschriftung 1\label{fig:label1}]
+%   {\includegraphics[width=0.49\textwidth]{grafik1}}
+%   \hfill
+%   \subfigure[Beschriftung 2\label{fig:label2}]
+%   {\includegraphics[width=0.49\textwidth]{grafik2}}
+%   \caption{Beschriftung allgemein}
+%   \label{fig:label-gesamt}
+% \end{figure}
+\usepackage{subfigure}
+
+
+% Für Links
+\usepackage{hyperref}
+    % Bsp: \url{www.wikipedia.de}
+
+%Tabellen an Stelle zwingen mit [H]
+\usepackage{float}
+
+% %code einbinden
+\usepackage{minted}
+% \usemintedstyle{borland}
+%     %Bsp: \begin{minted}{python}\end{minted}
+\usepackage{xcolor}
+
+%\begin{longtable}\end{longtable} Tabellen über mehrere Seiten
+\usepackage{longtable}
+
+\usepackage[]{todonotes}
+
+
+\begin{document}
+
+	{\bf \sc \Large Protokoll Cheat Sheet}
+
+	\paragraph{Grundlegender \textquote{Stil} eines Protokolls:}
+	\begin{enumerate}[label=(\roman*)]
+		\item Pr"asens
+		\item Rechtschreibung (Spellcheck, Korrektur lesen, $\ldots$)
+        \item \underline{kein:} ich , wir, man (d.\,h. objektiv schreiben)
+		\item Die Auswertung muss Formeln f"ur die bestimmten Werte enthalten (oder Verweise darauf) und auch die \underline{Fehlerformeln}!
+		\item Generell unterschriebenes \underline{Messprotokoll} mit abgeben
+		\item Durchf"uhrung nicht wie in Praktikumsanleitung, sondern als Beschreibung, die auch ohne vor dem spezifischen Versuchsaufbau zu sitzen verstanden werden kann. S"atze wie \textquote{lege Schalter 3 um} vermeiden und lieber schreiben \textquote{Schalte jetzt den zus"atzlichen Widerstand $R_3$ zu}.\\ Das Experiment sollte danach von einem anderen Physiker reproduziert werden k"onnen.
+	\end{enumerate}
+
+	\paragraph{Bib\TeX{} f"ur Literaturlisten:}
+	In den header der \LaTeX{} Datei:
+	\begin{minted}{tex}
+\usepackage{csquotes}
+\usepackage[sortcites, backend = biber, sorting = none]{biblatex}
+\bibliography{sources}
+	\end{minted}
+	Hier k"onnte man noch eine Sortierung definieren (siehe Google). Unter \emph{sources} muss der Dateipfad zur jeweiligen Bib\TeX{} Datei angegeben werden.\\
+    Eine Bib\TeX{} Datei hat folgenden Syntax (man beachte die Kommasetzung):
+    \inputminted{tex}{sources.bib}
+
+	\paragraph{Zitieren und Referenzieren:}
+	Mit obigem Bib\TeX{} l"asst sich dann mit
+	\begin{minted}{tex}
+\cite[S.90]{exphy1_dem}
+	\end{minted}
+	oder mit
+	\begin{minted}{tex}
+\cite{lp}
+	\end{minted}
+	im Text zitiert werden. Obige Zitate s"ahen dann so aus: Demtr"oder, \cite[S. 90]{exphy1_dem} oder das LP, \cite{lp}. Weitere Info zur Syntax auf \url{https://en.wikipedia.org/wiki/BibTeX}.\\
+	Mit dem Befehl
+	\begin{minted}{tex}
+\printbibliography[title = {Literatur}, heading=bibintoc]
+	\end{minted}
+    l"asst sich die Literaturliste dann am Ende der Datei drucken. Wichtig: obiger Befehl muss noch vor \emph{end(document)} stehen. Mit \texttt{heading=bibintoc} wird die Literaturliste automatisch in das Inhaltverzeichnis eingetragen.\\
+
+	Au\ss erdem lassen sich Formeln, Abbildungen, Tabellen, etc. mit einem \emph{label} versehen um so sp"ater darauf zu verweisen. Wichtig ist, dass das \emph{label} innerhalb der Umgebung ist, auf die verwiesen werden soll.
+
+	\begin{minted}{tex}
+\begin{Umgebung fuer Tabelle}
+...
+\label{tab: bsp_table}
+\end{Umgebung fuer tabelle}
+...
+Siehe Abb. \ref{fig: Bild1}.
+	\end{minted}
+
+	\paragraph{Sch"one Tabellen:}
+	In den header:
+	\begin{minted}{tex}
+\usepackage{booktabs}
+	\end{minted}
+	Und dann Tabellen mit:
+	\begin{minted}{tex}
+\begin{table}[h]
+    \centering
+    \caption{Eine Beispieltabelle.}
+    \begin{tabular}{cc}
+        \\\toprule
+        Titel links & Titel rechts \\
+        \midrule
+        hier steht & dann ganz, ganz, ganz \\
+        viel & toller Inhalt! \\
+        \bottomrule
+    \end{tabular}
+    \label{tab: bsp_table}
+\end{table}
+	\end{minted}
+	Im Idealfall enthalten Tabellen nur horizontale, aber keine vertikalen Linien.\\
+	Das {\tt [h]} \textquote{zwingt} die Tabelle an diese Stelle (h = here) im \LaTeX{} Dokument und ist Teil des Packages \emph{float}.\\
+	Das sieht dann so aus:
+	\begin{table}[h]
+	    \centering
+	    \caption{Eine Beispieltabelle.}
+	    \begin{tabular}{cc}
+	        \\\toprule Titel links & Titel rechts \\
+	        \midrule
+	        hier steht & dann ganz, ganz, ganz \\
+	        viel & toller Inhalt! \\
+	        \bottomrule
+	    \end{tabular}
+	    \label{tab: bsp_table}
+	\end{table}
+
+	Beachte die Nutzung von \emph{toprule, midrule \& bottomrule}. Sowie bereits erw"ahnte Nutzung von labels (siehe oben). Au\ss erdem kann eine \emph{Caption} definiert werden. Die Nummerierung in der Tabelle macht \LaTeX{} dann selber, siehe Tab. \ref{tab: bsp_table}.
+
+	Um in der pdf Datei Verlinkungen zu erzeugen und URLs, wie oben, zu drucken, l"asst sich noch das Package
+	\begin{minted}{tex}
+\usepackage{hyperref}
+	\end{minted}
+	einbinden.
+
+	\paragraph{Dynamische Klammern in Mathe-Umgebungen:}
+	\begin{minted}[breaklines=true]{tex}
+\begin{equation} \label{eq: bsp_gleichung}
+    f(x) = \left(\frac{\sum_{n=0}^\infty \left(\frac{1}{n!}\right)}{f'(x)}\right).
+\end{equation}
+	\end{minted}
+    Mit den Befehlen \emph{left} und \emph{right} lassen sich alle Klammern dynamisch auf die richtige L"ange setzen (funktioniert auch mit anderen Klammern, einfach mal ausprobieren!). Gl. \eqref{eq: bsp_gleichung} sieht dann so aus:
+	\begin{equation} \label{eq: bsp_gleichung}
+		f(x) = \left(\frac{\sum_{n=0}^\infty \left(\frac{1}{n!}\right)}{f'(x)}\right).
+	\end{equation}
+	Beachte auch hier die Nutzung des labels.
+
+	\paragraph{Weitere interessante Packages:}
+	Hier gilt es zu googlen, wenn ihr es mal braucht.
+	\begin{minted}[breaklines=true]{tex}
+% zum Setup der Seitenränder
+\usepackage{geometry}
+
+% schöne Header und Footer
+\usepackage{fancyhdr}
+
+% zur Vervollständigung der Matheumgebungen
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+
+% kann sehr nuetzlich sein
+\usepackage{mathtools}
+\usepackage{tensor}
+\usepackage{hhtensor}
+
+% andere Enumerations (siehe ganz oben - Grundlegender Stil)
+\usepackage{enumitem}
+
+% zum Einfügen von Code in LaTeX, wie ich es hier z.B. getan habe
+% Achtung beim kompilieren mit latexmk: nutze `-shell-escape` Option
+\usepackage{minted}
+
+% oben erwähnt
+\usepackage{float}
+
+% SI EINHEITEN
+% mögliche Optionen hierfür: [mode=text,decimalsymbol=comma,
+% exponent-product=\cdot,separate-uncertainty = true]
+\usepackage{siunitx}
+% SI-Einheiten über \SI{<num>}{<unit>}, \ang{;;} Winkel in Grad/Min/Sek, \si{<unit>}
+\sisetup{locale=DE}
+
+% nuetzlich, wenn ihr laengere Arbeiten schreibt
+\usepackage{todonotes}
+
+% wenn ihr euer Projekt gern in mehreren, einzeln kompilierbaren Dateien strukturieren wollt
+\usepackage{subfiles}
+	\end{minted}
+
+	\paragraph{Plots und Fits:}
+	\begin{enumerate}[label=(\Roman*)]
+	 	\item auf Achsenbeschriftung (mit Einheiten) achten
+	 	\item keine Datenpunkte oder Funktionen sollten die Legende "uberschneiden
+	 	\item grid aktivieren, um Ablesen der Daten zu vereinfachen
+        \item Stellt euch die Frage: Ist der Plot klar oder enth"alt er unn"otige Information? Machen die ticks und deren Beschriftung Sinn?
+        \item bei Fits immer die Methode, die gefittete Funktion und das Ergebnis angeben (h"aufig ist eine Tabelle eine gute Wahl)
+	 	\item die G"ute des Fits diskutieren, z.\,B. anhand von $\chi^2/\mathrm{ndf}$
+	 \end{enumerate}
+
+     \paragraph{Compilation:} Wie nun aber daraus eine PDF-Datei machen? Wenn ihr \emph{Sharelatex / Overleaf} vermeiden wollt, dann kann ich euch einen guten Editor / IDE nahe legen (z.\,B. \texttt{vim} mit Plugin \texttt{vimtex}), der euch dann die Arbeit abnimmt. Wer es ganz klassisch m"ochte kann auch direkt in der command line kompilieren, daf"ur nimmt man am besten \texttt{latexmk} (siehe \url{https://mg.readthedocs.io/latexmk.html}).
+
+	 \printbibliography[title = {Literatur}]
+\end{document}
